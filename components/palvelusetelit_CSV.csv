@@ -1,0 +1,28 @@
+﻿Päätöksen numero;Päätöksen päivämäärä;Palvelutuote;Arviohinta;Myönnetyt määrät
+P1;2025-01-01;Kognitiivinen psykoterapia;2000;20
+P1;2025-01-01;Hoitoneuvottelu;150;1
+P2;2025-01-15;Lyhytterapia;600;6
+P3;2025-01-31;Fysioterapia;900;12
+P4;2025-02-12;Puheterapia;750;10
+P5;2025-02-28;Neuropsykologinen kuntoutus;3500;35
+P6;2025-03-05;Kognitiivinen psykoterapia;1800;18
+P7;2025-03-20;Hammashoito;300;1
+P8;2025-03-31;Kotipalvelu;1200;24
+P9;2025-04-10;Lyhytterapia;500;5
+P10;2025-04-30;Fysioterapia;1500;20
+P11;2025-05-01;Puheterapia;0;0
+P12;2025-05-15;Kognitiivinen psykoterapia;2100;21
+P13;2025-05-31;Neuropsykologinen kuntoutus;4000;40
+P14;2025-06-10;Psykiatrin arvio;250;1
+P15;2025-06-20;Kotipalvelu;1300;26
+P16;2025-06-30;Lyhytterapia;700;7
+P17;2025-07-05;Fysioterapia;1200;16
+P18;2025-07-31;Puheterapia;800;12
+P19;2025-08-10;Kognitiivinen psykoterapia;1950;19
+P20;2025-08-25;Hammashoito;450;2
+P21;2025-09-01;Neuropsykologinen kuntoutus;3800;38
+P22;2025-09-15;Kotipalvelu;1100;22
+P23;2025-09-30;Lyhytterapia;650;6
+P24;2024-10-15;Fysioterapia;1000;14
+P25;2023-12-05;Kognitiivinen psykoterapia;1750;17
+P25;2023-12-05;Mahdollinen aktiivisen tuottajan lisäkorvaus;200;2

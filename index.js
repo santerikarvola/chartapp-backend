@@ -1,28 +1,53 @@
-const http = require('http')
+const express = require('express')
+const app = express()
+const cors = require('cors')
+const getDataStrategy = require("./components/DataStrategy")
 
-let notes = [
-  {
-    id: "1",
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: "2",
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: "3",
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-]
-const app = http.createServer((request, response) => {
-  response.writeHead(200, { 'Content-Type': 'application/json' })
-  response.end(JSON.stringify(notes))
+const database = "db.json"
+const strategy = getDataStrategy("json")
+
+const setelit = strategy(database)
+
+
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+
+app.use(express.json())
+app.use(cors())
+app.use(requestLogger)
+
+app.get('/', (request, response) => {
+  response.send('<h1>Hello World!</h1>')
 })
 
+app.get('/api/setelit', (request, response) => {
+  response.json(setelit)
+})
+
+app.get('/api/setelit/:id', (request, response) => {
+  const id = request.params.id
+  const seteli = setelit.find(seteli => seteli["Päätöksen numero"] === id)
+
+  if (seteli) {
+    response.json(seteli)
+  } else {
+    response.status(404).end()
+  }
+})
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
 const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
 
