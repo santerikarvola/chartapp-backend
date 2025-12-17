@@ -13,5 +13,34 @@ const parsedData = Papa.parse(csvFile, {
 
 const jsonData = parsedData.data
 
-console.log("Parsed data", parsedData)
-console.log(jsonData)
+const groupedData = {}
+
+for(const row of jsonData){
+  const numero = row["Päätöksen numero"]
+  const paivamaara = row["Päätöksen päivämäärä"]
+  const palvelutuote = row["Palvelutuote"]
+  const hinta = row["Arviohinta"]
+  const maara = row["Myönnetyt määrät"]
+
+  if(!groupedData[numero]) {
+    groupedData[numero] = {
+      "Päätöksen numero": numero,
+      "Päätöksen päivämäärä": paivamaara,
+      "Palvelutuotteet": {}
+    }
+  }
+
+  groupedData[numero]["Palvelutuotteet"][palvelutuote] = {
+    "Arviohinta": hinta,
+    "Myönnetyt määrät": maara
+  }
+}
+
+console.log("groupedData", groupedData)
+
+
+const fullData = {
+  setelit: Object.values(groupedData)
+}
+
+fs.writeFileSync("../jsonData.json", JSON.stringify(fullData, null, 2), "utf8")
