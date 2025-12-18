@@ -3,11 +3,10 @@ const app = express()
 const cors = require('cors')
 const getDataStrategy = require("./components/DataStrategy")
 
-const database = "db.json"
 const strategy = getDataStrategy("json")
+const database = "db.json"
 
 const setelit = strategy(database)
-
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -22,7 +21,7 @@ app.use(cors())
 app.use(requestLogger)
 
 app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
+  response.send('<h1>Tervetuloa kaaviosovelluksen backendiin.</h1>')
 })
 
 app.get('/api/setelit', (request, response) => {

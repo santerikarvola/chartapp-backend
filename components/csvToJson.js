@@ -7,8 +7,7 @@ const parsedData = Papa.parse(csvFile, {
   delimiter: ";",
   header: true,
   dynamicTyping: true,
-  skipEmptyLines: "greedy",
-
+  skipEmptyLines: "greedy"
 })
 
 const jsonData = parsedData.data
@@ -43,4 +42,4 @@ const fullData = {
   setelit: Object.values(groupedData)
 }
 
-fs.writeFileSync("../jsonData.json", JSON.stringify(fullData, null, 2), "utf8")
+fs.writeFileSync("../db.json", JSON.stringify(fullData, null, 2), "utf8")
