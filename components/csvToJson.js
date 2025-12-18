@@ -1,45 +1,46 @@
-const fs = require("fs")
 const Papa = require("papaparse")
 
-const csvFile = fs.readFileSync("./palvelusetelit_CSV.csv", "utf8")
+const csvToJson = (csv) => {
+  const parsedData = Papa.parse(csv, {
+    delimiter: ";",
+    header: true,
+    dynamicTyping: true,
+    skipEmptyLines: "greedy"
+  })
 
-const parsedData = Papa.parse(csvFile, {
-  delimiter: ";",
-  header: true,
-  dynamicTyping: true,
-  skipEmptyLines: "greedy"
-})
+  const jsonData = parsedData.data
 
-const jsonData = parsedData.data
+  const groupedData = {}
 
-const groupedData = {}
+  for(const row of jsonData){
+    const numero = row["Päätöksen numero"]
+    const paivamaara = row["Päätöksen päivämäärä"]
+    const palvelutuote = row["Palvelutuote"]
+    const hinta = row["Arviohinta"]
+    const maara = row["Myönnetyt määrät"]
 
-for(const row of jsonData){
-  const numero = row["Päätöksen numero"]
-  const paivamaara = row["Päätöksen päivämäärä"]
-  const palvelutuote = row["Palvelutuote"]
-  const hinta = row["Arviohinta"]
-  const maara = row["Myönnetyt määrät"]
+    if(!groupedData[numero]) {
+      groupedData[numero] = {
+        "Päätöksen numero": numero,
+        "Päätöksen päivämäärä": paivamaara,
+        "Palvelutuotteet": {}
+      }
+    }
 
-  if(!groupedData[numero]) {
-    groupedData[numero] = {
-      "Päätöksen numero": numero,
-      "Päätöksen päivämäärä": paivamaara,
-      "Palvelutuotteet": {}
+    groupedData[numero]["Palvelutuotteet"][palvelutuote] = {
+      "Arviohinta": hinta,
+      "Myönnetyt määrät": maara
     }
   }
 
-  groupedData[numero]["Palvelutuotteet"][palvelutuote] = {
-    "Arviohinta": hinta,
-    "Myönnetyt määrät": maara
+  console.log("groupedData", groupedData)
+
+
+  const fullData = {
+    setelit: Object.values(groupedData)
   }
+
+  return fullData
 }
 
-console.log("groupedData", groupedData)
-
-
-const fullData = {
-  setelit: Object.values(groupedData)
-}
-
-fs.writeFileSync("../db.json", JSON.stringify(fullData, null, 2), "utf8")
+module.exports = csvToJson
