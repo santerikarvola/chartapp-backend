@@ -1,7 +1,8 @@
 const express = require('express')
-const app = express()
 const cors = require('cors')
 const getDataStrategy = require("./components/DataStrategy")
+
+const app = express()
 
 const strategy = getDataStrategy("json")
 const database = "db.json"
