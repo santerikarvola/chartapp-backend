@@ -66,14 +66,14 @@ jobs:
 
       - name: Build Docker
         working-directory: backend
-        run: docker build -t chart-app .
+        run: docker build -t chart-app:${{ github.sha }} .
 
       - name: Save Dockerimage
-        run: docker save chart-app -o chart-app.tar
+        run: docker save chart-app:${{ github.sha }} -o chart-app_${{ github.sha }}.tar
 
       - name: Upload Dockerimage artifact
         uses: actions/upload-artifact@v4
         with:
-          name: chart-app-image
-          path: chart-app.tar
+          name: chart-app-image-${{ github.sha }}
+          path: chart-app_${{ github.sha }}.tar
         
