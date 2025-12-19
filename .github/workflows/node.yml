@@ -1,0 +1,79 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI + Docker build
+
+on:
+  push:
+    branches: [ "main" ]
+  repository_dispatch:
+    types: [frontend_change]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code from backend
+        uses: actions/checkout@v4
+        with:
+          path: backend
+
+      - name: Checkout code from frontend
+        uses: actions/checkout@v4
+        with:
+          repository: santerikarvola/chartapp-frontend
+          ref: main
+          path: frontend
+  
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+
+      - name: Install frontend
+        working-directory: frontend
+        run: npm ci
+
+      - name: Test frontend
+        working-directory: frontend
+        run: npm test
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Delete old dist from backend
+        run: rm -rf backend/dist
+
+      - name: Copy new dist from frontend
+        run: cp -r frontend/dist backend/dist
+
+
+      - name: Install backend
+        working-directory: backend
+        run: npm ci
+
+      - name: Test backend
+        working-directory: backend
+        run: npm test
+
+      - name: Build Docker
+        working-directory: backend
+        run: docker build -t chart-app .
+
+      - name: Save Dockerimage
+        run: docker save chart-app -o chart-app.tar
+
+      - name: Upload Dockerimage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chart-app-image
+          path: chart-app.tar
+        
