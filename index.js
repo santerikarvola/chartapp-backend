@@ -4,9 +4,7 @@ const getDataStrategy = require("./components/DataStrategy")
 
 const app = express()
 
-const strategy = getDataStrategy("json")
-const database = "db.json"
-const setelit = strategy(database)
+const setelit = getDataStrategy("jsonFile")
 
 app.use(express.json())
 app.use(cors())
